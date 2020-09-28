@@ -71,5 +71,5 @@ public interface StudentDao {
      * 根据学生number删除中间表信息
      * @param students_number 学生号
      */
-    public void deleteCasByStudent_number(Integer[] students_number);
+     void deleteCasByStudent_number(Integer[] students_number);
 }
