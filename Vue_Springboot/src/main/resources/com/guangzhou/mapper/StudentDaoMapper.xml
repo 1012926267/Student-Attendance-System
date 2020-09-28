@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guangzhou.dao.StudentDao">
+
+    <!--查询头-->
+    <sql id="selectStudentVo">
+        select student_number,student_id,student_name,student_college,student_profession,student_sex,student_attendance
+        from student
+    </sql>
+
+    <!--查询集合-->
+<select id="selectStudentList" parameterType="Student" resultType="Student">
+    <include refid="selectStudentVo"/>
+<where>
+    <if test="student_number != null and student_number !=''">
+        AND student_number like concat('%',#{student_number},'%')
+    </if>
+    <if test="student_id != null and student_id !=''">
+        AND student_id like concat('%',#{student_id},'%')
+    </if>
+    <if test="student_name != null and student_name !=''">
+        AND student_name like concat('%',#{student_name},'%')
+    </if>
+    <if test="student_college != null and student_college !=''">
+        AND student_college like concat('%',#{student_college},'%')
+    </if>
+    <if test="student_profession != null and student_profession !=''">
+        AND student_profession like concat('%',#{student_profession},'%')
+    </if>
+    <if test="student_sex != null and student_sex !=''">
+        AND student_sex = #{student_sex}
+    </if>
+    <if test="student_attendance != null and student_attendance !=''">
+        AND student_attendance like concat('%',#{student_attendance},'%')
+    </if>
+</where>
+</select>
+
+        <!--增加学生-->
+    <insert id="addStudent" parameterType="Student" useGeneratedKeys="true" keyProperty="student_number">
+        insert into student (
+        <if test="student_number != null and student_number !=''">student_number,</if>
+        <if test="student_id != null and student_id !=''">student_id,</if>
+        <if test="student_name != null and student_name !=''">student_name,</if>
+        <if test="student_college != null and student_college !=''">student_college,</if>
+        <if test="student_profession != null and student_profession !=''">student_profession,</if>
+        <if test="student_sex != null and student_name !=''">student_sex,</if>
+        <if test="student_attendance != null and student_attendance !=''">student_attendance</if>
+        )values (
+        <if test="student_number != null and student_number !=''">#{student_number},</if>
+        <if test="student_id != null and student_id !=''">#{student_id},</if>
+        <if test="student_name != null and student_name !=''">#{student_name},</if>
+        <if test="student_college != null and student_college !=''">#{student_college},</if>
+        <if test="student_profession != null and student_profession !=''">#{student_profession},</if>
+        <if test="student_sex != null and student_sex !=''">#{student_sex},</if>
+        <if test="student_attendance != null and student_attendance !=''">#{student_attendance}</if>
+        )
+    </insert>
+
+    <!--修改学生-->
+    <update id="updateStudent" parameterType="Student">
+        update student
+        <set>
+            <if test="student_id != null and student_id !=''">student_id = #{student_id},</if>
+            <if test="student_name != null and student_name !=''">student_name = #{student_name},</if>
+            <if test="student_college != null and student_college !=''">student_college = #{student_college},</if>
+            <if test="student_profession != null and student_profession !=''">student_profession = #{student_profession},</if>
+            <if test="student_sex != null and student_name !=''">student_sex = #{student_sex},</if>
+            <if test="student_attendance != null and student_attendance !=''">student_attendance = #{student_attendance}</if>
+        </set>
+        where student_number = #{student_number}
+    </update>
+
+    <!--根据序号获取学生信息-->
+    <select id="selectStudentByNumber" parameterType="Integer" resultType="Student">
+        <include refid="selectStudentVo"/>
+        <where>
+         student_number = #{student_number}
+        </where>
+    </select>
+
+    <!--根据课程查询学生-->
+    <select id="selectStudentById" parameterType="map" resultType="Student">
+        SELECT student.student_number,student_id,student_name,student_college,student_profession,student_sex,student_attendance
+        FROM cas
+        LEFT JOIN course
+        on course.id = cas.id
+        LEFT JOIN student
+        on student.student_number = cas.student_number
+        <where>
+            course.id = #{id}
+            <if test="student_id != null and student_id !='' and student_id != 'undefined'">
+                AND student_id like concat('%',#{student_id},'%')
+            </if>
+            <if test="student_name != null and student_name !=''and student_name != 'undefined' ">
+                AND student_name like concat('%',#{student_name},'%')
+            </if>
+            <if test="student_college != null and student_college !=''and student_college != 'undefined' ">
+                AND student_college like concat('%',#{student_college},'%')
+            </if>
+            <if test="student_profession != null and student_profession !='' and student_profession != 'undefined'">
+                AND student_profession like concat('%',#{student_profession},'%')
+            </if>
+            <if test="student_sex != null and student_sex !='' and student_sex != 'undefined'">
+                AND student_sex = #{student_sex}
+            </if>
+            <if test="student_attendance != null and student_attendance !='' and student_attendance != 'undefined' ">
+                AND student_attendance like concat('%',#{student_attendance},'%')
+            </if>
+
+        </where>
+    </select>
+
+    <!--删除学生信息-->
+    <delete id="deleteStudentByNumber" parameterType="Integer" >
+        delete from student
+        <where>
+            student_number = #{student_number}
+        </where>
+    </delete>
+
+    <!--删除学生信息集合-->
+    <delete id="deleteStudentByNumbers" parameterType="Integer">
+        delete from student
+        <where>
+          student_number in
+          <foreach collection="array" item="student_number" open="(" separator="," close=")">
+              #{student_number}
+          </foreach>
+        </where>
+    </delete>
+
+    <!--根据课程id删除学生-->
+    <delete id="deleteStudentById">
+        delete from cas where id=#{id} and student_number in
+        <foreach collection="students_number" item="student_number" open="(" separator="," close=")">
+            #{student_number}
+        </foreach>
+    </delete>
+
+    <!--根据学生id删除中间表信息-->
+    <delete id="deleteCasByStudent_number" parameterType="Integer">
+        delete from cas
+        <where>
+          student_number in
+          <foreach collection="students_number" item="student_number" open="(" separator="," close=")">
+            #{student_number}
+          </foreach>
+    </where>
+    </delete>
+
+    <!--根据课程id添加学生-->
+    <insert id="addStudentById"  parameterType="Map">
+        insert into cas(id,student_number)
+        values
+        <foreach collection="list" separator="," item="item" index="index">
+            (
+            #{item.id},
+            #{item.student_number}
+
+            )
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guangzhou.dao.TeacherDao">
+<select id="findUsernameAndPassword" resultType="Teacher">
+    SELECT * FROM teacher
+    where username = #{username} and password = #{password}
+</select>
+
+    <select id="confirmPassword" parameterType="String" resultType="String">
+        SELECT password FROM teacher
+    where username = #{username}
+    </select>
+
+    <insert id="addTeacher" parameterType="Teacher" useGeneratedKeys="true" keyProperty="idteacher">
+        insert into teacher
+        values
+        (#{idteacher},#{username},#{password},#{teacher_name},#{invite},#{teacher_sex},#{telephone},#{mail},#{teacher_url})
+    </insert>
+
+    <select id="selectUserInfo" parameterType="String" resultType="Teacher">
+        select teacher_name,username,teacher_sex,telephone,mail,idteacher
+        from teacher
+        where username = #{username}
+    </select>
+
+    <select id="selectUserAvart" parameterType="String" resultType="Teacher">
+        select teacher_url,idteacher
+        from teacher
+        where username = #{username}
+    </select>
+
+    <update id="updatePassword" parameterType="String">
+        update teacher
+        <set>
+            password = #{newPassword}
+        </set>
+        where username = #{username}
+    </update>
+
+    <update id="updateAvatar" parameterType="String">
+        update teacher
+        <set>
+            teacher_url = #{teacher_url}
+        </set>
+        where username = #{username}
+    </update>
+
+    <update id="updateTeacher" parameterType="Teacher">
+        update teacher
+        <set>
+            <if test="username != null and username !=''">username = #{username},</if>
+            <if test="password != null and password !=''">password = #{password},</if>
+            <if test="teacher_name != null and teacher_name !=''">teacher_name = #{teacher_name},</if>
+            <if test="teacher_sex != null and teacher_sex !=''">teacher_sex = #{teacher_sex},</if>
+            <if test="teacher_url != null and teacher_url !=''">teacher_url = #{teacher_url},</if>
+            <if test="telephone != null and telephone !=''">telephone = #{telephone},</if>
+            <if test="mail != null and mail !=''">mail = #{mail}</if>
+        </set>
+        where idteacher = #{idteacher}
+    </update>
+</mapper>

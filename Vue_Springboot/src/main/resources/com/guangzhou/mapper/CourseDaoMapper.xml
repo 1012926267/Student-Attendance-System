@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guangzhou.dao.CourseDao">
+<sql id="selectCourseVo">
+    select id,course_id,course_name,course_time
+    from course
+</sql>
+<sql id="selectUpdateCourseVo">
+        select id,course_id,course_name
+        from course
+    </sql>
+
+    <!--查询课程集合-->
+    <select id="selectCourseList" parameterType="Course"  resultType="Course">
+        <include refid="selectCourseVo"/>
+<where>
+    <if test="course_id != null and course_id !=''">
+        AND course_id like concat('%',#{course_id},'%')
+    </if>
+    <if test="course_name != null and course_name !=''">
+        AND course_name like concat('%',#{course_name},'%')
+    </if>
+    <if test="course_time != null and course_time !=''">
+        AND course_time like concat('%',#{course_time},'%')
+    </if>
+</where>
+    </select>
+
+    <!--增加课程-->
+    <insert id="addCourse" parameterType="Course" useGeneratedKeys="true" keyProperty="id">
+        insert into course (
+        <if test="id != null and id !=''">id,</if>
+        <if test="course_id != null and course_id !=''">course_id,</if>
+        <if test="course_name != null and course_name !=''">course_name,</if>
+        course_time
+        )values (
+        <if test="id != null and id !=''">#{id},</if>
+        <if test="course_id != null and course_id !=''">#{course_id},</if>
+        <if test="course_name != null and course_name !=''">#{course_name},</if>
+        sysdate()
+        )
+    </insert>
+
+    <!--修改课程-->
+    <update id="updateCourse" parameterType="Course">
+        update course
+        <set>
+            <if test="course_id != null and course_id !=''">course_id = #{course_id},</if>
+            <if test="course_name != null and course_name !=''">course_name = #{course_name}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--根据主键编号获取课程信息-->
+    <select id="selectCourseById" parameterType="Integer" resultType="Course">
+        <include refid="selectUpdateCourseVo"/>
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <!--根据课程id搜索课程-->
+    <select id="selectCourse_idById" parameterType="Integer" resultType="String">
+        select course_id from course
+        <where>
+            id in
+            <foreach collection="array" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <!--删除课程信息集合-->
+    <delete id="deleteCourseByIds" parameterType="Integer">
+        delete from course
+        <where>
+            id in
+            <foreach collection="array" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+
+    <!--删除课程信息中间表集合-->
+    <delete id="deleteCatByCourse_id" parameterType="String">
+        delete from cat
+        <where>
+            course_id in
+            <foreach collection="array" item="course_id" open="(" separator="," close=")">
+                #{course_id}
+            </foreach>
+        </where>
+    </delete>
+
+    <!--通过用户名删除课程-->
+    <delete id="deleteCourseByUsername" parameterType="String">
+        delete from cat
+        where course_id = #{course_id}
+        and   username = #{username}
+    </delete>
+
+    <!--根据用户名查询课程-->
+    <select id="selectCoursesByTeacherId" parameterType="String" resultType="Course">
+        SELECT course.course_Name,course.course_Id,course.course_time,course.id
+        FROM cat
+                 LEFT JOIN teacher
+                           on teacher.username = cat.username
+                 LEFT JOIN course
+                           on course.course_id = cat.course_id
+
+<where>
+    teacher.username = #{username}
+    <if test="course_name != null and course_name !='' and course_name != 'undefined' ">
+        AND course_name like concat('%',#{course_name},'%')
+    </if>
+    <if test="course_id != null and course_id !='' and course_id != 'undefined' ">
+        AND course.course_id like concat('%',#{course_id},'%')
+    </if>
+</where>
+    </select>
+
+    <!--根据用户名添加课程-->
+    <insert id="addCourseByTeacherUsername"  parameterType="Map">
+        insert into cat(course_id,username)
+         values
+            <foreach collection="list" separator="," item="item" index="index">
+                (
+                 #{item.course_id},
+                 #{item.username}
+                )
+            </foreach>
+    </insert>
+
+</mapper>
