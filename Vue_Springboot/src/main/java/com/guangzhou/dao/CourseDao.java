@@ -12,7 +12,7 @@ public interface CourseDao {
      * @param course 课程信息
      * @return 课程数据集合
      */
-    public List<Course> selectCourseList(Course course);
+    List<Course> selectCourseList(Course course);
 
     /**
      * 添加课程
