@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.guangzhou.dao.StudentDao">
 
+    <!--开启缓存-->
+    <!--<cache/>-->
+
+    <!--关联关系缓存处理-->
+    <cache-ref namespace="com.guangzhou.dao.TeacherDao"/>
+
     <!--查询头-->
     <sql id="selectStudentVo">
         select student_number,student_id,student_name,student_college,student_profession,student_sex,student_attendance

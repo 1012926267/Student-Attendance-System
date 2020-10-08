@@ -108,7 +108,7 @@ class SpringbootVueApplicationTests {
         Integer student_number = 1;
         Student student = studentService.selectStudentByNumber(student_number);
         System.out.println(student);
-
+        Student students = studentService.selectStudentByNumber(student_number);
     }
 
     @Test

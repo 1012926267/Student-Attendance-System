@@ -10,6 +10,12 @@
         from course
     </sql>
 
+    <!--开启缓存-->
+    <!--<cache/>-->
+
+    <!--关联关系缓存处理-->
+    <cache-ref namespace="com.guangzhou.dao.TeacherDao"/>
+
     <!--查询课程集合-->
     <select id="selectCourseList" parameterType="Course"  resultType="Course">
         <include refid="selectCourseVo"/>

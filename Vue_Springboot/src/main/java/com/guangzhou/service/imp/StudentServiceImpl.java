@@ -4,6 +4,7 @@ import com.guangzhou.dao.StudentDao;
 import com.guangzhou.entity.Student;
 import com.guangzhou.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -50,6 +51,10 @@ public class StudentServiceImpl implements StudentService {
      * @return 学生信息
      */
     @Override
+/*
+//注解开启缓存
+ @Cacheable("studentList")
+ */
     public Student selectStudentByNumber(Integer student_number) {
         return studentDao.selectStudentByNumber(student_number);
     }
