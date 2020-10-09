@@ -3,7 +3,7 @@ Student Attendance System
 ## 项目简介
 实现教师登陆注册，每个教师账户的课程管理、用户管理、学生管理和考勤管理的一个前后端分离项目。
 
-前端运用了VUE框架配合elementUI开发网页页面，使用VUE_cil安装nodejs环境以及node package mangager还有axios进行前后端数据交互。后端使用的是springboot、springMVC、Mybatis，使用JWT认证，服务器软件使用springboot内置的Tomcat。数据库使用mysql。代码使用git管理工具管理进行管理。
+前端运用了VUE框架配合elementUI开发网页页面，使用VUE_cil安装nodejs环境以及node package mangager还有axios进行前后端数据交互。后端使用的是springboot、springMVC、Mybatis，使用JWT认证，服务器软件使用springboot内置的Tomcat。数据库使用mysql,在Linux系统下部署redis实现分布式缓存。代码使用git管理工具管理进行管理。
 
 前端代码：https://github.com/1012926267/vue_cil
 
