@@ -3,7 +3,7 @@ Student Attendance System
 ## 项目简介
 实现教师登陆注册，每个教师账户的课程管理、用户管理、学生管理和考勤管理的一个前后端分离项目。
 
-前端运用了VUE框架配合elementUI开发网页页面，使用VUE_cil安装nodejs环境以及node package mangager还有axios进行前后端数据交互。后端使用的是springboot、springMVC、Mybatis，使用JWT认证，服务器软件使用springboot内置的Tomcat。数据库使用mysql,在Linux系统下部署redis实现分布式缓存。代码使用git管理工具管理进行管理。
+前端运用了VUE框架配合elementUI开发网页页面，后端使用springboot、springMVC、Mybatis、redis的技术栈，使用分布式任务调度平台xxl-job完成定时任务的调用，使用JWT令牌实现账号的认证登陆，数据库使用mysql,，项目均使用docker部署在阿里云服务器的Linux系统上，代码使用git管理工具管理进行管理。后续使用springcloudalibaba和springcloud的组件对项目进行重构。
 
 前端代码：https://github.com/1012926267/vue_cil
 
@@ -12,7 +12,7 @@ Student Attendance System
 1.  用户管理：管理的是教师个人信息和账号信息
 2.  课程管理：管理课程列表的增删改查以及每个教师所拥有的课程和每个课程所包含的学生（学生选课和教师选课）
 3.  学生管理：管理学生列表的增删改查
-4.  考勤管理：管理学生的出勤状态，涉及硬件读取卡号更新学生状态（完善中）
+4.  考勤管理：管理学生的出勤状态，涉及硬件读取卡号更新学生状态
 5.  日程管理：日历功能
 
 
@@ -62,13 +62,3 @@ Student Attendance System
 ![date](https://github.com/1012926267/Student-Attendance-System/blob/master/Vue_Springboot/src/main/resources/static/demonstration/date.png)
 
 
-
-主要配置和接口：
-
-![set](https://github.com/1012926267/Student-Attendance-System/blob/master/Vue_Springboot/src/main/resources/static/demonstration/set.png)
-
-![set3](https://github.com/1012926267/Student-Attendance-System/blob/master/Vue_Springboot/src/main/resources/static/demonstration/set3.png)
-
-![set47](https://github.com/1012926267/Student-Attendance-System/blob/master/Vue_Springboot/src/main/resources/static/demonstration/set47.png)
-
-![sql](https://github.com/1012926267/Student-Attendance-System/blob/master/Vue_Springboot/src/main/resources/static/demonstration/sql.png)
